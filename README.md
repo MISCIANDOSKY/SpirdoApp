@@ -10,7 +10,7 @@ PWA pubblicata esclusivamente con GitHub Pages: https://misciandosky.github.io/S
 4. Premi **Commit changes** e conferma su `main`.
 5. Aspetta che la pubblicazione in **Actions** sia verde, poi torna sull’app e ricarica.
 
-Ogni file in `dist/audio/` crea automaticamente un pulsante. `Campanello.mp3` diventa **Campanello**. Sono supportati MP3, WAV, M4A, OGG, AAC, FLAC e WEBM; la riproduzione dipende dal browser. Per cambiare l’etichetta rinomina il file oppure modifica `dist/audio/labels.json`, per esempio `{"campana.mp3":"Campanello"}`. Per rimuovere un suono elimina il file da GitHub.
+Ogni file in `dist/audio/` crea automaticamente un pulsante. `Campanello.mp3` diventa **Campanello**. Sono supportati MP3, WAV, M4A, OGG, AAC, FLAC e WEBM; la riproduzione dipende dal browser. L’etichetta corrisponde sempre al nome del file senza estensione, mantenendo spazi e altri caratteri. Non va inserita manualmente; per cambiarla rinomina il file. Per rimuovere un suono elimina il file da GitHub.
 
 Chi ha il link ascolta senza login. Solo i collaboratori con permessi di scrittura GitHub possono modificare la raccolta. La schermata Admin richiede un codice prima di mostrare i collegamenti di gestione. Il controllo avviene nel browser ed è aggirabile: non è una barriera di sicurezza. GitHub gestisce le vere autorizzazioni sui file; conoscere il codice non conferisce permessi sul repository. Nessun token GitHub viene pubblicato. Repository e audio sono pubblici.
 

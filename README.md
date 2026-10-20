@@ -1,31 +1,21 @@
 # SpirdoApp
 
-PWA con raccolta audio condivisa e accesso amministratore in alto a destra. Il codice amministratore si imposta nella variabile d’ambiente `ADMIN_CODE`, senza inserirlo nel repository. Senza accesso si possono ascoltare i suoni; dopo l'accesso si possono aggiungere, rinominare e rimuovere. Le autorizzazioni sono verificate dal server su tutte le modifiche. Il codice non è incluso nei file inviati al browser.
+PWA pubblicata esclusivamente con GitHub Pages: https://misciandosky.github.io/SpirdoApp/
 
-## Avvio
+## Carica dal telefono
 
-Richiede Node.js 20 o successivo, nessuna dipendenza esterna.
+1. Apri l’app e premi **Carica su GitHub** in alto a destra.
+2. Accedi al tuo account GitHub e scegli **choose your files**.
+3. Seleziona gli audio dal telefono (MP3 consigliato, massimo 25 MB per file nel caricamento web GitHub).
+4. Premi **Commit changes** e conferma su `main`.
+5. Aspetta che la pubblicazione in **Actions** sia verde, poi torna sull’app e ricarica.
 
-```sh
-ADMIN_CODE="codice-scelto" node server.mjs
-```
+Ogni file in `dist/audio/` crea automaticamente un pulsante. `Campanello.mp3` diventa **Campanello**. Sono supportati MP3, WAV, M4A, OGG, AAC, FLAC e WEBM; la riproduzione dipende dal browser. Per cambiare l’etichetta rinomina il file oppure modifica `dist/audio/labels.json`, per esempio `{"campana.mp3":"Campanello"}`. Per rimuovere un suono elimina il file da GitHub.
 
-Aprire http://localhost:3000. Non aprire direttamente index.html: l'app richiede il server. File e catalogo sono salvati in `data/`, da conservare su un volume persistente e includere nei backup. `PORT` cambia porta; `DATA_DIR` cambia directory archivio; `ADMIN_CODE` è obbligatoria e definisce il codice di accesso. Non servire l'intera cartella progetto con un server statico: codice server, test e dati non devono essere pubblici.
+Chi ha il link ascolta senza login. Solo i collaboratori con permessi di scrittura GitHub possono modificare la raccolta. Non è richiesto un codice nell’app: GitHub gestisce autenticazione e autorizzazioni. Nessun token o codice amministratore viene pubblicato. Repository e audio sono pubblici.
 
-## Pubblicazione
+L’app si installa dal menu del browser o su iPhone da Safari → Condividi → Aggiungi alla schermata Home. Audio e aggiornamenti richiedono connessione; l’interfaccia e l’ultimo catalogo caricato possono essere consultati offline.
 
-Pubblicare su un hosting Node.js con disco persistente, HTTPS e `NODE_ENV=production` (cookie Secure). Usare un'unica istanza del server; la sessione amministratore dura 8 ore e viene invalidata al riavvio. Non è sufficiente pubblicare solo `dist/`. Il link consente a tutti l'ascolto; il codice autorizza le modifiche. Cinque codici errati comportano un blocco di 15 minuti per indirizzo visto dal server. Dietro un proxy lo stesso limite può riguardare più visitatori.
+## Sviluppo
 
-I file audio possono pesare fino a 20 MB ciascuno. La raccolta viene aggiornata all'apertura e quando si torna sull'app. Gli audio della vecchia versione salvati in IndexedDB non sono trasferiti automaticamente: ricaricarli dal pannello amministratore.
-
-Installazione dal menu del browser: “Installa app”, oppure su iPhone Safari → Condividi → Aggiungi alla schermata Home. L'interfaccia è disponibile offline dopo il primo accesso; raccolta condivisa, audio e amministrazione richiedono connessione.
-
-## Verifica
-
-```sh
-node test.mjs
-```
-
-Test delle richieste al gestore server: accesso, codice errato, autorizzazioni, caricamento, ascolto pubblico, etichette, rimozione, uscita, controllo origine e limite tentativi. Test superati. Non è stato possibile avviare un server HTTP nel sandbox (porte bloccate); verifica nel browser non eseguita.
-
-Il repository contiene il progetto completo. Per usare un link pubblico serve un hosting Node.js con HTTPS e disco persistente: GitHub Pages non esegue il server e non supporta questo archivio condiviso.
+`npm run build` genera `dist/sounds.json` dagli audio. `npm test` verifica nomi, etichette, URL e selezione dei file. Non servono dipendenze o server esterni. GitHub Actions genera il catalogo e pubblica `dist/` dopo ogni commit su `main`.

@@ -6,3 +6,10 @@ async function refresh(){if(loading)return;loading=true;try{const response=await
 $('stop').onclick=stopAll;window.addEventListener('focus',refresh);setInterval(()=>{if(!document.hidden)refresh()},30000);refresh();
 let installPrompt;window.addEventListener('beforeinstallprompt',event=>{event.preventDefault();installPrompt=event;$('install').hidden=false});$('install').onclick=async()=>{if(!installPrompt)return;await installPrompt.prompt();installPrompt=null;$('install').hidden=true};
 if('serviceWorker'in navigator){navigator.serviceWorker.addEventListener('controllerchange',()=>{if(!sessionStorage.getItem('spirdo-sw-reloaded')){sessionStorage.setItem('spirdo-sw-reloaded','1');location.reload()}});navigator.serviceWorker.register('./sw.js').catch(()=>{})}
+
+
+const dialog=$('adminDialog'),adminForm=$('adminForm'),adminPanel=$('adminPanel');
+function resetAdmin(){adminForm.hidden=false;adminPanel.hidden=true;$('adminCode').value='';$('adminError').textContent=''}
+$('admin').onclick=()=>{resetAdmin();dialog.showModal();$('adminCode').focus()};
+$('cancelAdmin').onclick=()=>dialog.close();$('closeAdmin').onclick=()=>dialog.close();dialog.addEventListener('close',resetAdmin);
+adminForm.onsubmit=async event=>{event.preventDefault();const code=$('adminCode').value;$('adminCode').value='';const digest=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(code));const hash=Array.from(new Uint8Array(digest),b=>b.toString(16).padStart(2,'0')).join('');if(hash!=='af34f2ed49cff0049dc43eebfc06e9314ea0ce7c190e132d132d39170c0d71f2'){$('adminError').textContent='Codice non corretto.';$('adminCode').focus();return}adminForm.hidden=true;adminPanel.hidden=false;$('closeAdmin').focus()};

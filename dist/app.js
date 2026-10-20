@@ -13,3 +13,7 @@ function resetAdmin(){adminForm.hidden=false;adminPanel.hidden=true;$('adminCode
 $('admin').onclick=()=>{resetAdmin();dialog.showModal();$('adminCode').focus()};
 $('cancelAdmin').onclick=()=>dialog.close();$('closeAdmin').onclick=()=>dialog.close();dialog.addEventListener('close',resetAdmin);
 adminForm.onsubmit=async event=>{event.preventDefault();const code=$('adminCode').value;$('adminCode').value='';const digest=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(code));const hash=Array.from(new Uint8Array(digest),b=>b.toString(16).padStart(2,'0')).join('');if(hash!=='af34f2ed49cff0049dc43eebfc06e9314ea0ce7c190e132d132d39170c0d71f2'){$('adminError').textContent='Codice non corretto.';$('adminCode').focus();return}adminForm.hidden=true;adminPanel.hidden=false;$('closeAdmin').focus()};
+
+function preventPageZoom(event){if(event.cancelable)event.preventDefault()}
+for(const type of ['gesturestart','gesturechange','gestureend'])document.addEventListener(type,preventPageZoom,{passive:false});
+for(const type of ['touchstart','touchmove'])document.addEventListener(type,event=>{if(event.touches.length>1)preventPageZoom(event)},{passive:false});
